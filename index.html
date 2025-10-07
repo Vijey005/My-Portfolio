@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vijey R S - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <style>
+        /* --- COLOR PALETTE VARIABLES --- */
+        :root {
+            --color-black: #000000;
+            --color-primary-purple: #6A0DAD;
+            --color-highlight-purple: #A020F0;
+            --color-lilac: #C8A2C8;
+            --color-pale-yellow: #FFFACD;
+            
+            --background-dark: var(--color-black);
+            --text-primary: var(--color-pale-yellow);
+            --text-secondary: var(--color-lilac);
+        }
+
+        /* --- GLOBAL STYLES & RESET --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Anonymous Pro', monospace;
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 17px;
+            background-color: var(--background-dark);
+            cursor: none;
+        }
+
+        /* --- BACKGROUND CANVAS STYLE --- */
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+        
+        /* --- CURSOR GLOW EFFECT --- */
+        .cursor-glow {
+            position: fixed;
+            z-index: 9999;
+            width: 40px;
+            height: 40px;
+            background: rgba(160, 32, 240, 0.2);
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 20px var(--color-highlight-purple), 0 0 30px var(--color-highlight-purple);
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out, width 0.2s ease, height 0.2s ease;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-primary);
+            text-shadow: 0 0 8px var(--color-primary-purple);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2.2em;
+            text-align: left;
+            margin: 0 0 50px 0;
+            padding-left: 15px;
+            border-left: 4px solid var(--color-primary-purple);
+        }
+
+        a {
+            color: var(--color-highlight-purple);
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: none;
+        }
+
+        a:hover {
+            color: var(--text-primary);
+        }
+
+        /* --- DYNAMIC FADE-IN ANIMATION --- */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- GLASSMORPHISM EFFECT CLASS --- */
+        .glass-card {
+            background: rgba(106, 13, 173, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 250, 205, 0.15);
+            border-radius: 12px;
+            transition: all 0.4s ease-in-out;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            box-shadow: 0 0 25px rgba(106, 13, 173, 0.6);
+            transform: translateY(-5px);
+        }
+        
+        /* --- UTILITY & ICON STYLES --- */
+        .gamify-type {
+            color: var(--color-primary-purple);
+            font-size: 0.9em;
+        }
+
+        .material-symbols-outlined {
+            vertical-align: middle;
+            font-size: 1.2em;
+        }
+
+        .icon-small {
+            font-size: 1em;
+            margin-right: 8px;
+        }
+        
+        /* --- DYNAMIC ISLAND STICKY NAVBAR --- */
+        #sticky-nav {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            padding: 10px 30px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 50px;
+            transform: translateX(-50%) translateY(-150%);
+            opacity: 0;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        #sticky-nav.is-visible {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        #sticky-nav .nav-links a {
+             color: var(--text-primary);
+             margin: 0 15px;
+             font-weight: 700;
+             font-size: 1.0em;
+             padding-bottom: 5px;
+             border-bottom: 2px solid transparent;
+             transition: color 0.3s, border-color 0.3s;
+        }
+        
+        #sticky-nav .nav-links a:hover {
+            color: var(--color-lilac);
+            border-bottom-color: var(--color-lilac);
+        }
+
+        /* 1. HERO/HEADER STYLES */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, #1A0429, #050505); 
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 4.5em;
+            letter-spacing: 6px;
+        }
+        
+        .hero-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.3em;
+            margin-bottom: 30px;
+        }
+
+        .hero-contact-links {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 35px;
+            margin-bottom: 40px;
+        }
+
+        .hero-contact-links a {
+            color: var(--text-secondary);
+            transition: color 0.3s, transform 0.3s;
+        }
+        
+        .hero-contact-links a svg {
+            width: 32px;
+            height: 32px;
+            fill: currentColor;
+        }
+
+        .hero-contact-links a:hover {
+            color: var(--text-primary);
+            transform: scale(1.15);
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            margin: 0 20px;
+            font-weight: 700;
+            font-size: 1.1em;
+            padding: 5px 10px;
+            border-bottom: 2px solid transparent;
+            transition: color 0.3s, border-color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--color-highlight-purple);
+        }
+
+        /* 2. ABOUT ME STYLES */
+        #about .glass-card {
+            padding: 50px;
+        }
+
+        .bio-text p {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        /* 3. SKILLS STYLES */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .skill-category {
+             padding: 40px 30px;
+        }
+
+        .skill-category h3 {
+            color: var(--color-primary-purple);
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .skills-list {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        /* 4. PROJECTS STYLES */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+        
+        .project-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .project-card-content {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .project-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card h3 {
+            font-size: 1.5em;
+            border-bottom: 1px dashed var(--text-secondary);
+            padding-bottom: 10px;
+        }
+
+        .project-tagline {
+            margin: 20px 0;
+            font-size: 1.05em;
+            color: var(--text-secondary);
+            flex-grow: 1; 
+        }
+
+        .skills-used {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .skills-used li {
+            background-color: var(--color-primary-purple);
+            color: var(--text-primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            text-transform: uppercase;
+        }
+
+        .btn-link {
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--color-primary-purple);
+            color: var(--text-primary);
+            padding: 10px 18px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: background-color 0.3s, transform 0.3s, color 0.3s;
+        }
+
+        .btn-link:hover {
+            background-color: var(--color-lilac);
+            color: var(--color-black);
+            transform: scale(1.05);
+        }
+
+        /* 5. FOOTER/CONTACT STYLES */
+        #contact {
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 60px;
+        }
+
+        #contact h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            margin: 25px 0;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 15px;
+            font-size: 1.1em;
+            text-decoration: underline dashed var(--color-lilac);
+        }
+
+        .copyright {
+            margin-top: 25px;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        /* --- MEDIA QUERIES FOR RESPONSIVENESS --- */
+        @media (max-width: 768px) {
+             body {
+                 font-size: 16px;
+                 background: #000;
+             }
+             .hero {
+                 min-height: 80vh;
+             }
+             .hero h1 {
+                 font-size: 3em;
+             }
+             .hero-subtitle {
+                 font-size: 1.1em;
+             }
+             .nav-links a {
+                 display: block;
+                 margin: 15px 0;
+             }
+             /* --- HIDE FEATURES NOT SUITABLE FOR MOBILE --- */
+             #sticky-nav {
+                display: none; /* Hide the floating navbar entirely */
+             }
+             .cursor-glow {
+                display: none; /* Hide the custom cursor */
+             }
+             body, a {
+                cursor: auto; /* Restore default cursor behavior on touch devices */
+             }
+             .section-padding {
+                 padding: 60px 0;
+             }
+             .projects-grid, .skills-grid {
+                 grid-template-columns: 1fr;
+             }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="background-canvas"></canvas>
+    
+    <div class="cursor-glow"></div>
+
+    <nav id="sticky-nav" class="glass-card">
+        <div class="nav-links">
+            <a href="#about">ABOUT</a>
+            <a href="#skills">SKILLS</a>
+            <a href="#projects">PROJECTS</a>
+            <a href="#contact">CONTACT</a>
+        </div>
+    </nav>
+    
+    <header class="hero">
+        <canvas id="particle-canvas"></canvas>
+        <div class="hero-content">
+            <h1>VIJEY R S</h1>
+            <p class="hero-subtitle">AI & Data Science Developer | Third Year B.Tech Undergrad</p>
+             <div class="hero-contact-links">
+                <a href="mailto:vijeyrs05@gmail.com" target="_blank" title="Email">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/vijey-r-s" target="_blank" title="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+                <a href="https://github.com/Vijey005" target="_blank" title="GitHub">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+            </div>
+            <nav class="nav-links">
+                <a href="#about">ABOUT</a>
+                <a href="#skills">SKILLS</a>
+                <a href="#projects">PROJECTS</a>
+                <a href="#contact">CONTACT</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section id="about" class="section-padding fade-in-section">
+            <h2>About Me</h2>
+            <div class="glass-card">
+                <div class="bio-text">
+                    <p>As a third-year B.Tech AI & Data Science student at Kumaraguru College of Technology, I'm passionate about building impactful, user-centric applications.</p>
+                    <p>My mission is to merge deep AI expertise in Machine Learning, Deep Learning, and Computer Vision with strong frontend web development skills. I am currently focusing on cutting-edge fields like NLP, Generative AI, and Full-Stack Development to solve real-world problems.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="section-padding fade-in-section">
+            <h2>My Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category glass-card">
+                    <h3>AI & Data Science</h3>
+                    <div class="skills-list">ML, DL, Python, Computer Vision, NLP, RNNs, Generative AI</div>
+                </div>
+                <div class="skill-category glass-card">
+                    <h3>Web Development</h3>
+                    <div class="skills-list">HTML, CSS, Vanilla JS, Responsive Design, Node.js, Express.js, MongoDB</div>
+                </div>
+                <div class="skill-category glass-card">
+                    <h3>Tools & Frameworks</h3>
+                    <div class="skills-list">Intel oneAPI, OpenVINO, Roboflow, Streamlit, PyTorch, Gemini API, Git</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section-padding fade-in-section">
+            <h2>My Projects</h2>
+            <div class="projects-grid">
+                
+                <div class="project-card glass-card">
+                    <img src="Terrasense Logo .png" alt="Terrasense Project Image" class="project-image">
+                    <div class="project-card-content">
+                        <h3>Terrasense <span class="gamify-type">[AI/HACKATHON]</span></h3>
+                        <p class="project-tagline">AI & IoT platform for real-time soil health, weather prediction, and crop disease detection to promote sustainable farming.</p>
+                        <ul class="skills-used">
+                            <li>AI/ML</li><li>Intel oneAPI</li><li>OpenVINO</li><li>Web Interface</li>
+                        </ul>
+                        <a href="https://github.com/Sharan-G-S/TerraSense" target="_blank" class="btn-link">
+                            <span class="material-symbols-outlined icon-small">folder</span> View Source
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card glass-card">
+                    <img src="Cinematch Logo 1.png" alt="CineMatch Project Image" class="project-image">
+                    <div class="project-card-content">
+                        <h3>CineMatch <span class="gamify-type">[FULL-STACK]</span></h3>
+                        <p class="project-tagline">Personalized Movie Recommendation Web App using TMDB API, secure authentication, and a cinematic Dark UI/UX.</p>
+                        <ul class="skills-used">
+                            <li>Node.js</li><li>Express.js</li><li>MongoDB</li><li>Frontend</li>
+                        </ul>
+                        <a href="https://github.com/Vijey005/CineMatch" target="_blank" class="btn-link">
+                           <span class="material-symbols-outlined icon-small">folder</span> View Source
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card glass-card">
+                     <img src="Freelynk Logo.png" alt="Freelynk Project Image" class="project-image">
+                     <div class="project-card-content">
+                        <h3>Freelynk <span class="gamify-type">[FULL-STACK]</span></h3>
+                        <p class="project-tagline">A dynamic freelancing platform with a live search bar and a fast Node.js/MongoDB backend API.</p>
+                        <ul class="skills-used">
+                            <li>HTML/CSS/JS</li><li>Node.js</li><li>Express.js</li><li>MongoDB</li>
+                        </ul>
+                        <a href="https://github.com/Vijey005/ISS028-" target="_blank" class="btn-link">
+                            <span class="material-symbols-outlined icon-small">folder</span> View Source
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="project-card glass-card">
+                    <img src="Crop Disease Prediction.jpg" alt="CROP GUARD Project Image" class="project-image">
+                    <div class="project-card-content">
+                        <h3>CROP GUARD <span class="gamify-type">[AI/CV]</span></h3>
+                        <p class="project-tagline">Smart agricultural assistant for potato disease detection (ResNet-50) and multilingual farmer support using the Gemini AI Chatbot.</p>
+                        <ul class="skills-used">
+                            <li>ResNet-50</li><li>PyTorch</li><li>Gemini API</li><li>Streamlit</li>
+                        </ul>
+                        <a href="https://github.com/VaRSiNi6/forge" target="_blank" class="btn-link">
+                            <span class="material-symbols-outlined icon-small">folder</span> View Source
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer id="contact" class="glass-card">
+        <div class="container">
+            <h3>Get In Touch</h3>
+            <p>I'm open to new collaborations, projects, and opportunities.</p>
+            <p class="contact-info">
+                Email: <a href="mailto:vijeyrs05@gmail.com">vijeyrs05@gmail.com</a>
+            </p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/vijey-r-s" target="_blank" class="social-link">
+                    LinkedIn Profile
+                </a>
+                <a href="https://github.com/Vijey005" target="_blank" class="social-link">
+                    GitHub Repos
+                </a>
+            </div>
+            <p class="copyright">&copy; 2025 Vijey R S. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- SCRIPT FOR DYNAMIC FADE-IN-ON-SCROLL ---
+        const sections = document.querySelectorAll('.fade-in-section');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, observerOptions);
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // --- SCRIPT FOR HERO PARTICLE CANVAS ANIMATION ---
+        const heroCanvas = document.getElementById('particle-canvas');
+        const heroCtx = heroCanvas.getContext('2d');
+        heroCanvas.width = window.innerWidth;
+        heroCanvas.height = window.innerHeight;
+
+        let heroParticlesArray;
+
+        class HeroParticle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+            draw() {
+                heroCtx.beginPath();
+                heroCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                heroCtx.fillStyle = '#C8A2C8';
+                heroCtx.fill();
+            }
+            update() {
+                if (this.x > heroCanvas.width || this.x < 0) this.directionX = -this.directionX;
+                if (this.y > heroCanvas.height || this.y < 0) this.directionY = -this.directionY;
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        function initHeroParticles() {
+            heroParticlesArray = [];
+            let numberOfParticles = 100;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * .4) - 0.2;
+                let directionY = (Math.random() * .4) - 0.2;
+                heroParticlesArray.push(new HeroParticle(x, y, directionX, directionY, size, '#C8A2C8'));
+            }
+        }
+
+        function connectHeroParticles() {
+            let opacityValue = 1;
+            let connectionDistance = 100;
+            for (let a = 0; a < heroParticlesArray.length; a++) {
+                for (let b = a; b < heroParticlesArray.length; b++) {
+                    let distance = ((heroParticlesArray[a].x - heroParticlesArray[b].x) * (heroParticlesArray[a].x - heroParticlesArray[b].x)) +
+                                   ((heroParticlesArray[a].y - heroParticlesArray[b].y) * (heroParticlesArray[a].y - heroParticlesArray[b].y));
+                    if (distance < (connectionDistance * connectionDistance)) {
+                        opacityValue = 1 - (distance / (connectionDistance*connectionDistance));
+                        heroCtx.strokeStyle = `rgba(106, 13, 173, ${opacityValue})`;
+                        heroCtx.lineWidth = 1;
+                        heroCtx.beginPath();
+                        heroCtx.moveTo(heroParticlesArray[a].x, heroParticlesArray[a].y);
+                        heroCtx.lineTo(heroParticlesArray[b].x, heroParticlesArray[b].y);
+                        heroCtx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateHero() {
+            requestAnimationFrame(animateHero);
+            heroCtx.clearRect(0, 0, innerWidth, innerHeight);
+            for (let i = 0; i < heroParticlesArray.length; i++) {
+                heroParticlesArray[i].update();
+            }
+            connectHeroParticles();
+        }
+        
+        initHeroParticles();
+        animateHero();
+
+        // --- SCRIPT FOR STICKY NAVBAR ---
+        const stickyNav = document.getElementById('sticky-nav');
+        const heroSection = document.querySelector('.hero');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > heroSection.offsetHeight - 50) {
+                stickyNav.classList.add('is-visible');
+            } else {
+                stickyNav.classList.remove('is-visible');
+            }
+        });
+
+        // --- SCRIPT FOR CURSOR GLOW ---
+        const cursorGlow = document.querySelector('.cursor-glow');
+        window.addEventListener('mousemove', e => {
+            cursorGlow.style.transform = `translate(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%))`;
+        });
+        
+        
+        // --- SCRIPT FOR BACKGROUND "DRIFTING EMBERS" ANIMATION ---
+        const bgCanvas = document.getElementById('background-canvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        bgCanvas.width = window.innerWidth;
+        bgCanvas.height = window.innerHeight;
+
+        let bgParticlesArray;
+
+        class BgParticle {
+            constructor() {
+                this.x = Math.random() * bgCanvas.width;
+                this.y = Math.random() * bgCanvas.height;
+                this.size = Math.random() * 2.5 + 1;
+                this.speedX = (Math.random() * 0.4) - 0.2;
+                this.speedY = (Math.random() * 0.4) - 0.2;
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > bgCanvas.width || this.y < 0 || this.y > bgCanvas.height) {
+                    this.x = Math.random() * bgCanvas.width;
+                    this.y = Math.random() > 0.5 ? 0 : bgCanvas.height;
+                }
+            }
+            draw() {
+                bgCtx.fillStyle = `rgba(200, 162, 200, ${this.opacity})`;
+                bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                bgCtx.fill();
+            }
+        }
+        
+        function initBgParticles() {
+            bgParticlesArray = [];
+            for (let i = 0; i < 70; i++) {
+                bgParticlesArray.push(new BgParticle());
+            }
+        }
+
+        function handleBgParticles() {
+            for (let i = 0; i < bgParticlesArray.length; i++) {
+                bgParticlesArray[i].update();
+                bgParticlesArray[i].draw();
+            }
+        }
+
+        function animateBg() {
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            handleBgParticles();
+            requestAnimationFrame(animateBg);
+        }
+        
+        initBgParticles();
+        animateBg();
+
+        // --- GLOBAL RESIZE HANDLER ---
+        window.addEventListener('resize', () => {
+            // Hero Canvas
+            heroCanvas.width = window.innerWidth;
+            heroCanvas.height = window.innerHeight;
+            initHeroParticles();
+            
+            // Background Canvas
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            initBgParticles();
+        });
+        
+    </script>
+
+</body>
+</html>
